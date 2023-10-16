@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceGroupName": {
+            "value": "TODO"
+        },
+        "location": {
+            "value": "TODO"
+        },
+        "storageAccountName": {
+            "value": "TODO"
+        },
+        "storageAccountType": {
+            "value": "Standard_LRS"
+        },
+        "accessTier": {
+            "value": "Cool"
+        },
+        "storageAccountKind": {
+            "value": "StorageV2"
+        },
+        "containerName": {
+            "value": "TODO"
+        },
+        "ServicePrincipalObjectId": {
+            "value": "TODO"
+        }
+    }
+}

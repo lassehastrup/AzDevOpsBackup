@@ -1,0 +1,5 @@
+{
+    "Projects": [
+        "ProjectToBeExcluded", "Project2", "TestProject"
+    ]
+}
