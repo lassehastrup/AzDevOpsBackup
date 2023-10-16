@@ -1,0 +1,55 @@
+parameters:
+  - name: subscriptionID
+    type: string
+    default: "TODO"
+  - name: serviceConnectionName
+    type: string
+    default: "TODO"
+  - name: tenantID
+    type: string
+    default: "TODO"
+  - name: organizationName
+    type: string
+    default: "TODO"
+
+stages:
+  - stage: CI
+    jobs:
+      - job: PesterTests
+        steps:
+          - task: PowerShell@2
+            displayName: Module Pester Tests
+            inputs:
+              targetType: filePath
+              filePath: $(Build.SourcesDirectory)/tests/Pester.ps1
+              pwsh: true
+              errorActionPreference: continue
+              failOnStderr: true
+            continueOnError: false
+          - task: PublishTestResults@2
+            displayName: Publish test results
+            inputs:
+              testResultsFormat: NUnit
+              testResultsFiles: "**/TEST-*.xml"
+              failTaskOnFailedTests: true
+              testRunTitle: Pester
+            condition: always()
+
+  - stage: CD
+    displayName: Deployment
+    dependsOn: CI
+    condition: succeeded()
+    jobs:
+      - job: deploy
+        displayName: deploy
+        steps:
+          - task: AzurePowerShell@5
+            inputs:
+              azureSubscription: ${{parameters.serviceConnectionName}}
+              ScriptType: FilePath
+              ScriptPath: $(Build.SourcesDirectory)/deploy.ps1
+              ScriptArguments: -TenantID ${{parameters.tenantID}} -SubscriptionID ${{parameters.subscriptionID}} -OrganizationName ${{parameters.organizationName}}
+              FailOnStandardError: true
+              errorActionPreference: stop
+              azurePowerShellVersion: LatestVersion
+              pwsh: true

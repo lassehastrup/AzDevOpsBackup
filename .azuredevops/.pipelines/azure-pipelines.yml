@@ -1,0 +1,19 @@
+---
+pool:
+  vmImage: "ubuntu-latest"
+
+trigger:
+  branches:
+    include:
+      - main
+
+schedules:
+  - cron: "0 22 * * *"
+    displayName: Daily at 10pm
+    branches:
+      include:
+        - refs/heads/main
+
+    always: true
+extends:
+  template: stages.yml
